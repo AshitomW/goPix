@@ -6,6 +6,7 @@ import (
 	"image/color"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -71,6 +72,30 @@ func NewPxlCanvas(state *apptype.State,config apptype.PxlCanvasConfig) *PxlCanva
 	pxlCanvas.PixelData = NewBlankImage(pxlCanvas.PxlCols,pxlCanvas.PxlRows,color.NRGBA{128,128,128,255})
 	pxlCanvas.ExtendBaseWidget(pxlCanvas)
 	return pxlCanvas	
+}
+
+
+func (pxlCanvas *PxlCanvas) CreateRenderer() fyne.WidgetRenderer{
+	canvasImage:= canvas.NewImageFromImage(pxlCanvas.PixelData)
+	canvasImage.ScaleMode = canvas.ImageScalePixels
+	canvasImage.FillMode = canvas.ImageFillContain
+	
+	canvasBorder := make([]canvas.Line,4)
+	for i:=0;i <len(canvasBorder);i++{
+		canvasBorder[i].StrokeColor = color.NRGBA{100,100,100,255}
+		canvasBorder[i].StrokeWidth = 2 
+	}
+
+
+	renderer := &PxlCanvasRenderer{
+		pxlCanvas: pxlCanvas,
+		canvasImage: canvasImage,
+		canvasBorder: canvasBorder,
+
+	}
+
+	pxlCanvas.renderer = renderer
+	return renderer
 }
 
 
