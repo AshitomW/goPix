@@ -13,7 +13,7 @@ import (
 
 
 func BuildNewMenu(app *AppInit) *fyne.MenuItem{
-	return fyne.NewMenuItem("New",func(){
+	return fyne.NewMenuItem("New Drawing",func(){
 		sizeValidator := func(s string) error {
 			width, err := strconv.Atoi(s)
 			if err != nil {
