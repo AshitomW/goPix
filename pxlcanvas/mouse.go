@@ -19,6 +19,10 @@ func (pxlCanvas *PxlCanvas) MouseMoved(ev *desktop.MouseEvent){
 
 	if x, y:=pxlCanvas.MouseToCanvasXY(ev); x!= nil && y!=nil {
 		brush.TryBrush(pxlCanvas.appState,pxlCanvas,ev)
+		cursor := brush.Cursor(pxlCanvas.PxlCanvasConfig, pxlCanvas.appState.BrushType,ev, *x,*y)
+		pxlCanvas.renderer.SetCursor(cursor)
+	}else {
+		pxlCanvas.renderer.SetCursor(make([]fyne.CanvasObject,0))
 	}
 
 
