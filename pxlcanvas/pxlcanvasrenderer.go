@@ -14,7 +14,7 @@ type PxlCanvasRenderer struct {
 
 // interface implementation
 func (renderer *PxlCanvasRenderer) MinSize() fyne.Size{
-	return renderer.pxlCanvas.MinSize();
+	return renderer.pxlCanvas.DrawingArea
 }
 
 func (renderer *PxlCanvasRenderer) Objects() []fyne.CanvasObject{
