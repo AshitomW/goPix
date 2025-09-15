@@ -43,7 +43,7 @@ func (pxlCanvas *PxlCanvas) Bounds() image.Rectangle{
 
 
 
-func InBoundds(position fyne.Position , bounds image.Rectangle ) bool {
+func InBounds(position fyne.Position , bounds image.Rectangle ) bool {
 	if position.X >= float32(bounds.Min.X) && position.X < float32(bounds.Max.X) && position.Y >= float32(bounds.Min.Y) && position.Y < float32(bounds.Max.Y){
 		return true
 	}
@@ -109,3 +109,39 @@ func (pxlCanvas *PxlCanvas) TryPan(previousCoords *fyne.PointEvent, ev *desktop.
 	}
 }
 
+func (pxlCanvas *PxlCanvas) SetColor(c color.Color, x, y int){
+	// access the pixel data and set color
+
+	if nrgba, ok := pxlCanvas.PixelData.(*image.NRGBA); ok{
+		nrgba.Set(x,y,c)
+	}
+
+	if rgba, ok := pxlCanvas.PixelData.(*image.NRGBA); ok{
+		rgba.Set(x,y,c)
+	}
+
+
+	pxlCanvas.Refresh()
+}
+
+
+func(pxlCanvas *PxlCanvas) MouseToCanvasXY(ev *desktop.MouseEvent) (*int ,  *int){
+	bounds := pxlCanvas.Bounds()
+	if !InBounds(ev.Position,bounds){
+		return nil, nil
+	}
+
+
+	pxSize:= float32(pxlCanvas.PxSize)
+	xOffset := pxlCanvas.CanvasOffset.X
+	yOffset := pxlCanvas.CanvasOffset.Y 
+
+
+	x := int((ev.Position.X - xOffset)/pxSize)
+	y:= int((ev.Position.Y- yOffset)/pxSize)
+
+
+
+	return &x, &y
+
+}
